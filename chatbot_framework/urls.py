@@ -15,11 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,re_path
 from kakao_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^keyboard/?$', views.keyboard), # 예시 1
-    url(r'^message', views.message) # 예시 2
+    re_path(r'^keyboard/?$', views.keyboard), # 예시 1
+    re_path(r'^message', views.message) # 예시 2
 ]

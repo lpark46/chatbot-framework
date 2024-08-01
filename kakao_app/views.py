@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 import json
 
+@csrf_exempt
 def keyboard(request):
     return JsonResponse({
         'type':'text'
