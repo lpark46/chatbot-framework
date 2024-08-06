@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.http import HttpResponse
-from django.db import connection
+from django.db import connections
 import json
 
 @csrf_exempt
@@ -35,7 +35,7 @@ def message(request):
         })
 
 def test_db_connection(request):
-    with connection.cursor() as cursor:
+    with connections['external'].cursor() as cursor:
         cursor.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public'")
         row = cursor.fetchone()
     return HttpResponse(f"Number of tables: {row[0]}")
