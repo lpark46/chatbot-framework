@@ -31,3 +31,13 @@ def message(request):
                 }]
             }
         })
+
+from django.http import HttpResponse
+from django.db import connections
+
+def test_db_connection(request):
+    # Use the PostgreSQL database connection
+    with connections['external'].cursor() as cursor:
+        cursor.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public'")
+        row = cursor.fetchone()
+    return HttpResponse(f"Number of tables: {row[0]}")
