@@ -3,34 +3,114 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
+json_storage = {}
+
 @csrf_exempt
 def keyboard(request):
-    return JsonResponse({
-        'type':'text'
-    })
+    return JsonResponse(json_storage)
 
 @csrf_exempt
 def message(request):
+    global json_storage
     answer = ((request.body).decode('utf-8'))
-    return_json_str = json.loads(answer)
-    return_str = return_json_str['userRequest']['utterance']
+    json_str = json.loads(answer)
+    print(json_str)
+    json_storage = json_str
 
-    if return_str == '테스트':
-        return JsonResponse({
-            'version': "2.0",
-            'template': {
-                'outputs': [{
-                    'simpleText': {
-                        'text': "테스트 성공입니다."
+    return JsonResponse({
+        "version": "2.0",
+        "template": {
+            "outputs": [
+            {
+                "carousel": {
+                "type": "basicCard",
+                "items": [
+                    {
+                    "title": "보물상자",
+                    "description": "보물상자 안에는 뭐가 있을까",
+                    "thumbnail": {
+                        "imageUrl": "https://t1.kakaocdn.net/openbuilder/sample/lj3JUcmrzC53YIjNDkqbWK.jpg"
+                    },
+                    "buttons": [
+                        {
+                        "action": "message",
+                        "label": "열어보기",
+                        "messageText": "짜잔! 우리가 찾던 보물입니다"
+                        },
+                        {
+                        "action":  "webLink",
+                        "label": "구경하기",
+                        "webLinkUrl": "https://e.kakao.com/t/hello-ryan"
+                        }
+                    ]
+                    },
+                    {
+                    "title": "보물상자2",
+                    "description": "보물상자2 안에는 뭐가 있을까",
+                    "thumbnail": {
+                        "imageUrl": "https://t1.kakaocdn.net/openbuilder/sample/lj3JUcmrzC53YIjNDkqbWK.jpg"
+                    },
+                    "buttons": [
+                        {
+                        "action": "message",
+                        "label": "열어보기",
+                        "messageText": "짜잔! 우리가 찾던 보물입니다"
+                        },
+                        {
+                        "action":  "webLink",
+                        "label": "구경하기",
+                        "webLinkUrl": "https://e.kakao.com/t/hello-ryan"
+                        }
+                    ]
+                    },
+                    {
+                    "title": "보물상자3",
+                    "description": "보물상자3 안에는 뭐가 있을까",
+                    "thumbnail": {
+                        "imageUrl": "https://t1.kakaocdn.net/openbuilder/sample/lj3JUcmrzC53YIjNDkqbWK.jpg"
+                    },
+                    "buttons": [
+                        {
+                        "action": "message",
+                        "label": "열어보기",
+                        "messageText": "짜잔! 우리가 찾던 보물입니다"
+                        },
+                        {
+                        "action":  "webLink",
+                        "label": "구경하기",
+                        "webLinkUrl": "https://e.kakao.com/t/hello-ryan"
+                        }
+                    ]
                     }
-                }],
-                'quickReplies': [{
-                    'label': '처음으로',
-                    'action': 'message',
-                    'messageText': '처음으로'
-                }]
+                ]
+                }
             }
+            ]
+        }
         })
+
+# @csrf_exempt
+# def message(request):
+#     answer = ((request.body).decode('utf-8'))
+#     return_json_str = json.loads(answer)
+#     return_str = return_json_str['userRequest']['utterance']
+
+#     if return_str == '테스트':
+#         return JsonResponse({
+#             'version': "2.0",
+#             'template': {
+#                 'outputs': [{
+#                     'simpleText': {
+#                         'text': "테스트 성공입니다."
+#                     }
+#                 }],
+#                 'quickReplies': [{
+#                     'label': '처음으로',
+#                     'action': 'message',
+#                     'messageText': '처음으로'
+#                 }]
+#             }
+#         })
 
 from django.http import HttpResponse
 from django.db import connections
